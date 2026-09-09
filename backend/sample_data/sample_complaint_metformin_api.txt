@@ -1,0 +1,31 @@
+From: qa.intake@meridianapi-distributors.com
+To: complaints@genericfdf-manufacturing.com
+Subject: Customer Complaint - Metformin HCl API - Batch MFH260712A
+
+Dear QA Team,
+
+We are writing to formally log a quality complaint regarding a recent shipment
+of Metformin Hydrochloride API received from your facility.
+
+Product Name: Metformin Hydrochloride API
+Product Strength/Grade: IP/BP
+Batch/Lot Number: MFH260712A
+Manufacturing Date: 14-Jun-2026
+Expiry Date: 13-Jun-2028
+Quantity Affected: 25 kg (1 HDPE drum, out of a 5-drum consignment)
+
+Complaint Details:
+During incoming QC testing at our facility, the assay result for the above
+batch was found to be marginally below the accepted specification range on
+the first test (98.1% against NLT 98.5%). A retest is scheduled, but given
+the deviation we are raising this as a formal complaint pending investigation.
+The affected drum has been quarantined and segregated from approved stock.
+
+We request your QA team to investigate potential root cause (e.g. process
+deviation, storage/transport condition, testing methodology variance) and
+advise on CAPA. Please also confirm whether other batches from the same
+manufacturing campaign are affected.
+
+Regards,
+QA Intake Team
+Meridian API Distributors

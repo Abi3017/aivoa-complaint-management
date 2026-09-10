@@ -1,10 +1,15 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ComplaintForm(BaseModel):
     """Mirrors the 'Log Customer Complaint' form fields in the reference UI."""
+
+    # The extraction LLM occasionally returns a bare number for a field like
+    # quantity_affected (e.g. 5 instead of "5 bottles"); coerce rather than
+    # 500 on what is still perfectly usable data.
+    model_config = ConfigDict(coerce_numbers_to_str=True)
 
     complaint_source: Optional[str] = None
     customer_name: Optional[str] = None

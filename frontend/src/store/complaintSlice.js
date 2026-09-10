@@ -41,7 +41,14 @@ const complaintSlice = createSlice({
     applyTurnResult(state, action) {
       const { complaint_id, form, risk_assessment } = action.payload;
       state.complaintId = complaint_id;
-      state.form = { ...state.form, ...form };
+      // The backend already preserves untouched fields, but never let a
+      // null/empty value from a response clobber a field the form already
+      // has -- keeps a partial or stale response from erasing known data.
+      for (const [key, value] of Object.entries(form || {})) {
+        if (value !== null && value !== undefined && value !== "") {
+          state.form[key] = value;
+        }
+      }
       state.risk = { ...state.risk, ...risk_assessment };
       if (risk_assessment?.initial_severity) {
         state.status = `Triaged - ${risk_assessment.initial_severity}`;
@@ -53,8 +60,15 @@ const complaintSlice = createSlice({
       state.form = emptyForm;
       state.risk = emptyRisk;
     },
+    loadComplaint(state, action) {
+      const { id, status, form_data, risk_assessment } = action.payload;
+      state.complaintId = id;
+      state.status = status;
+      state.form = { ...emptyForm, ...form_data };
+      state.risk = { ...emptyRisk, ...risk_assessment };
+    },
   },
 });
 
-export const { applyTurnResult, resetComplaint } = complaintSlice.actions;
+export const { applyTurnResult, resetComplaint, loadComplaint } = complaintSlice.actions;
 export default complaintSlice.reducer;

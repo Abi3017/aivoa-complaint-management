@@ -51,12 +51,25 @@ def parse_document_node(state: AgentState) -> AgentState:
 
 
 def extract_or_update_node(state: AgentState) -> AgentState:
+    current_form = state.get("current_form") or {}
     user_prompt = (
-        f"CURRENT_FORM:\n{state.get('current_form') or {}}\n\n"
+        f"CURRENT_FORM:\n{current_form}\n\n"
         f"NEW_INPUT:\n{state['raw_text']}"
     )
     result = call_json(EXTRACT_OR_UPDATE_SYSTEM, user_prompt)
-    state["updated_form"] = result.get("updated_form", state.get("current_form", {}))
+    llm_form = result.get("updated_form") or {}
+
+    # The prompt tells the model to carry forward every field NEW_INPUT doesn't
+    # mention, but small/fast models routinely null out fields instead of
+    # echoing them back. Trusting that output verbatim silently erases existing
+    # data on every edit turn, so only let a real (non-null, non-empty) value
+    # from the LLM overwrite what's already on file.
+    merged_form = dict(current_form)
+    for key, value in llm_form.items():
+        if value not in (None, ""):
+            merged_form[key] = value
+
+    state["updated_form"] = merged_form
     return state
 
 
